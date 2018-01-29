@@ -658,7 +658,8 @@ public class AddressBook {
      * @return formatted listing message with index
      */
     private static String getIndexedPersonListElementMessage(int visibleIndex, String[] person) {
-        return String.format(MESSAGE_DISPLAY_LIST_ELEMENT_INDEX, visibleIndex) + getMessageForFormattedPersonData(person);
+        return String.format(MESSAGE_DISPLAY_LIST_ELEMENT_INDEX, visibleIndex)
+                + getMessageForFormattedPersonData(person);
     }
 
     /**
