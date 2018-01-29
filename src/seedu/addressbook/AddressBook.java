@@ -439,7 +439,9 @@ public class AddressBook {
      */
     private static String getMessageForSuccessfulAddPerson(String[] addedPerson) {
         return String.format(MESSAGE_ADDED,
-                getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
+                getNameFromPerson(addedPerson),
+                getPhoneFromPerson(addedPerson),
+                getEmailFromPerson(addedPerson));
     }
 
     /**
