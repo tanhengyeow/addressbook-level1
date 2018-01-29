@@ -423,7 +423,10 @@ public class AddressBook {
         if (!decodeResult.isPresent()) {
             return getMessageForInvalidCommandInput(COMMAND_ADD_WORD, getUsageInfoForAddCommand());
         }
+        return addPerson(decodeResult);
+    }
 
+    private static String addPerson(Optional<String[]> decodeResult) {
         // add the person as specified
         final String[] personToAdd = decodeResult.get();
         addPersonToAddressBook(personToAdd);
