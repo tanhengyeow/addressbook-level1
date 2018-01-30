@@ -525,9 +525,14 @@ public class AddressBook {
     private static ArrayList<String[]> getPersonsWithNameContainingAnyLetters(String letters) {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
 
+        // Returns a list of people whose names contains letters specified by user
         for (String[] person : getAllPersonsInAddressBook()) {
+
             for (int i=0; i<letters.length(); i++) {
-                if (person[0].contains(letters)) {
+                Character currLetter = letters.charAt(i);
+
+                // Checks if letter is present in person's name
+                if (person[0].indexOf(currLetter) >= 0) {
                     matchedPersons.add(person);
                     break;
                 }
