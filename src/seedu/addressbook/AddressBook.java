@@ -115,7 +115,7 @@ public class AddressBook {
     private static final String COMMAND_SEARCH_DESC = "Search all persons whose names contain any of the specified "
             + "letters (case-sensitive) and displays them as a list with index numbers.";
     private static final String COMMAND_SEARCH_PARAMETERS = "KEYWORD [MORE_KEYWORDS]";
-    private static final String COMMAND_SEARCH_EXAMPLE = COMMAND_FIND_WORD + " H";
+    private static final String COMMAND_SEARCH_EXAMPLE = COMMAND_SEARCH_WORD + " H";
 
     private static final String COMMAND_LIST_WORD = "list";
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers.";
