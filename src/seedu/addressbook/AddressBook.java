@@ -111,6 +111,12 @@ public class AddressBook {
     private static final String COMMAND_FIND_PARAMETERS = "KEYWORD [MORE_KEYWORDS]";
     private static final String COMMAND_FIND_EXAMPLE = COMMAND_FIND_WORD + " alice bob charlie";
 
+    private static final String COMMAND_SEARCH_WORD = "search";
+    private static final String COMMAND_SEARCH_DESC = "Search all persons whose names contain any of the specified "
+            + "letters (case-sensitive) and displays them as a list with index numbers.";
+    private static final String COMMAND_SEARCH_PARAMETERS = "KEYWORD [MORE_KEYWORDS]";
+    private static final String COMMAND_SEARCH_EXAMPLE = COMMAND_FIND_WORD + " H";
+
     private static final String COMMAND_LIST_WORD = "list";
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers.";
     private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD;
@@ -369,6 +375,9 @@ public class AddressBook {
         final String commandType = commandTypeAndParams[0];
         final String commandArgs = commandTypeAndParams[1];
         switch (commandType) {
+
+        case COMMAND_SEARCH_WORD:
+            return executeSearchPersons(commandArgs);
         case COMMAND_ADD_WORD:
             return executeAddPerson(commandArgs);
         case COMMAND_FIND_WORD:
@@ -457,6 +466,21 @@ public class AddressBook {
     }
 
     /**
+     * Search and lists all persons in address book whose name contains any of the argument letters.
+     * Keyword matching is case sensitive.
+     *
+     * @param commandArgs full command args string from the user
+     * @return feedback display message for the operation result
+     */
+    private static String executeSearchPersons(String commandArgs) {
+        /* final Set<String> letters = extractLettersFromSearchPersonArgs(commandArgs); */
+        final ArrayList<String[]> personsFound =
+                getPersonsWithNameContainingAnyLetters(commandArgs.replaceAll("\\s+",""));
+        showToUser(personsFound);
+        return getMessageForPersonsDisplayedSummary(personsFound);
+    }
+
+    /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
      *
      * @param personsDisplayed used to generate summary
@@ -488,6 +512,25 @@ public class AddressBook {
             final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
             if (!Collections.disjoint(wordsInName, keywords)) {
                 matchedPersons.add(person);
+            }
+        }
+        return matchedPersons;
+    }
+    /**
+     * Retrieves all persons in the full model whose names contain the specified letters.
+     *
+     * @param letters for searching
+     * @return list of persons in full model with name containing the specified letters
+     */
+    private static ArrayList<String[]> getPersonsWithNameContainingAnyLetters(String letters) {
+        final ArrayList<String[]> matchedPersons = new ArrayList<>();
+
+        for (String[] person : getAllPersonsInAddressBook()) {
+            for (int i=0; i<letters.length(); i++) {
+                if (person[0].contains(letters)) {
+                    matchedPersons.add(person);
+                    break;
+                }
             }
         }
         return matchedPersons;
@@ -1084,6 +1127,7 @@ public class AddressBook {
     private static String getUsageInfoForAllCommands() {
         return getUsageInfoForAddCommand() + LS
                 + getUsageInfoForFindCommand() + LS
+                + getUsageInfoForSearchCommand() + LS
                 + getUsageInfoForViewCommand() + LS
                 + getUsageInfoForDeleteCommand() + LS
                 + getUsageInfoForClearCommand() + LS
@@ -1103,6 +1147,12 @@ public class AddressBook {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_FIND_WORD, COMMAND_FIND_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_FIND_PARAMETERS) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_FIND_EXAMPLE) + LS;
+    }
+    /** Returns the string for showing 'search' command usage instruction */
+    private static String getUsageInfoForSearchCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_SEARCH_WORD, COMMAND_SEARCH_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_SEARCH_PARAMETERS) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_SEARCH_EXAMPLE) + LS;
     }
 
     /** Returns the string for showing 'delete' command usage instruction */
